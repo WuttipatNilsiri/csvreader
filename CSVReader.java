@@ -13,6 +13,8 @@ public class CSVReader implements Iterator {
 	String inputFile;
 	BufferedReader br;
 	String delimiter = ",";
+	String line = null;
+	
 	/**
 	 * initial with source
 	 * @param inputFile source input file
@@ -43,26 +45,31 @@ public class CSVReader implements Iterator {
 	 */
 	public boolean hasNext() {
 		try {
-			return br.readLine() != null;
+			line = br.readLine();
+			return line != null;
 		} catch (IOException e) {
 			return false;
 		}
 	}
 	/**
-	 * split line of input to array of string
+	 * split line and input to array of string
 	 * @return array of string
 	 */
 	@Override
 	public String[] next() {
 			String[] strAr = null;
 			try {
-				strAr = br.readLine().split(delimiter);
+				if(line == null){
+					line = br.readLine();
+				}
+				strAr = line.split(delimiter);
 				for (String x : strAr){
 					if (x == null){
 						x = "";
 					}
 				}
-			} catch (IOException e) {
+			} 
+			catch (IOException e) {
 				return null;
 			}
 		return strAr;
